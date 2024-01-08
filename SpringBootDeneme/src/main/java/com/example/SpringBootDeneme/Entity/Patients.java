@@ -2,12 +2,16 @@ package com.example.SpringBootDeneme.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
 
 @Entity
 @Data
+@Getter
+@Setter
 public class Patients {
 
     @Id
