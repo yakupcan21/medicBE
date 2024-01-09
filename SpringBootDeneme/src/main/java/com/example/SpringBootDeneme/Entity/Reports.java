@@ -16,7 +16,8 @@ public class Reports {
     private long rapNum;
     private String doctorName;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "patientId")
     private Patients Patient;
 
 /*

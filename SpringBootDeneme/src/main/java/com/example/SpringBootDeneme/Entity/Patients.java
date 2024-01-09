@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,8 +24,8 @@ public class Patients {
     private int patientWeight;
     private float patientBmi;
 
-    @OneToOne(mappedBy = "Patient", cascade = CascadeType.ALL)
-    private Reports report;
+    @OneToMany
+    private List<Reports> reports;
 
     public Patients() {
         super();
