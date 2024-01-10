@@ -10,6 +10,8 @@ public class CreateReport {
     @Id
     private String imgName;
 
+    private String findings;
+
     @Lob
     private byte[] data;
 
@@ -26,8 +28,9 @@ public class CreateReport {
     }
 
     // Assuming you need a constructor that takes the related entities as parameters
-    public CreateReport(String imgName, byte[] data, Reports reports, Patients patients) {
+    public CreateReport(String imgName, String findings, byte[] data, Reports reports, Patients patients) {
         this.imgName = imgName;
+        this.findings = findings;
         this.data = data;
         this.reports = reports;
         this.patients = patients;

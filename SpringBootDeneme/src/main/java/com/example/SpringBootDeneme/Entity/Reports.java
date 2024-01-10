@@ -17,6 +17,8 @@ public class Reports {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rapNum;
 
+    @Lob
+    private byte[] data;
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patients patient;
@@ -37,8 +39,9 @@ public class Reports {
     }
 
     // Assuming you need a constructor that takes the related entities as parameters
-    public Reports(String rapDate, Patients patient, Doctor doctor) {
+    public Reports(String rapDate, byte[] data, Patients patient, Doctor doctor) {
         this.rapDate = rapDate;
+        this.data = data;
         this.patient = patient;
         generateRandomRapNum();
         setCurrentDate();
