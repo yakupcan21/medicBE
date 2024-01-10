@@ -25,6 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     // New method to load user by ID
+
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id)
