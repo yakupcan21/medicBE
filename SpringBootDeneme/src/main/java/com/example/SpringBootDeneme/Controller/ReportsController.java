@@ -1,12 +1,15 @@
 package com.example.SpringBootDeneme.Controller;
 
 import com.example.SpringBootDeneme.Entity.Doctor;
+import com.example.SpringBootDeneme.Entity.Patients;
 import com.example.SpringBootDeneme.Entity.Reports;
 import com.example.SpringBootDeneme.Repository.DoctorRepository;
+import com.example.SpringBootDeneme.Repository.PatientsRepository;
 import com.example.SpringBootDeneme.Repository.ReportsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -15,18 +18,49 @@ import java.util.Optional;
 public class ReportsController {
 
     @Autowired
-    private ReportsRepository ReportsRepository;
+    private ReportsRepository reportsRepository;
 
-    @GetMapping(path ="/seeAllReports")
-    public Iterable<Reports> getAllDoctors(){ return ReportsRepository.findAll(); }
+    @Autowired
+    private PatientsRepository patientsRepository;
 
-    @GetMapping("/report/{id}")
-    public Reports getReport(@PathVariable Long id) {
-        Optional<Reports> report = ReportsRepository.findById(id);
-        if (report.isPresent()) return report.get();
-        return new Reports();
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @GetMapping(path = "/seeAllReports")
+    public Iterable<Reports> getAllReports() {
+        return reportsRepository.findAll();
     }
 
-    @PostMapping(path ="/createReport/{id}")
-    public Reports post(@RequestBody Reports reports) {return ReportsRepository.save(reports); }
+    @GetMapping("/report/{rapNum}")
+    public Optional<Reports> getReport(@PathVariable Long rapNum) {
+        return reportsRepository.findById(rapNum);
+    }
+
+    @PostMapping(path = "/createReport/{patientId}/{doctorId}")
+    public Reports post(@PathVariable Long patientId, @PathVariable Long doctorId, @RequestBody Reports reports) {
+        Patients patient = patientsRepository.findById(patientId).orElse(null);
+        Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
+
+        if (patient != null && doctor != null) {
+            // Set patient and doctor for the report
+            reports.setPatient(patient);
+            reports.setDoctor(doctor);
+
+            // Set other report information
+            reports.generateRandomRapNum();
+            reports.setCurrentDate();
+
+            // Save report to ReportsRepository
+            Reports savedReport = reportsRepository.save(reports);
+
+            // Add the report to the patient's report list
+            patient.getReports().add(savedReport);
+            patientsRepository.save(patient);
+
+            return savedReport;
+        } else {
+            // If patient or doctor not found, return null
+            return null;
+        }
+    }
 }
