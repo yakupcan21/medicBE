@@ -21,9 +21,8 @@ public class Reports {
     @JoinColumn(name = "patientId")
     private Patients patient;
 
-    @ManyToOne
-    @JoinColumn(name = "docId") // Assuming docId is the foreign key in Reports referencing Doctor
-    private Doctor doctor;
+    private String doctorName;
+
 
     @OneToOne(mappedBy = "reports", cascade = CascadeType.ALL)
     private CreateReport createReport;
@@ -32,9 +31,7 @@ public class Reports {
         this.patient = patient;
     }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
+
     public Reports() {
         super();
     }
@@ -43,7 +40,6 @@ public class Reports {
     public Reports(String rapDate, Patients patient, Doctor doctor) {
         this.rapDate = rapDate;
         this.patient = patient;
-        this.doctor = doctor;
         generateRandomRapNum();
         setCurrentDate();
     }
@@ -60,7 +56,4 @@ public class Reports {
         this.rapDate = currentDate.format(formatter);
     }
 
-    public String getDoctorName() {
-        return doctor != null ? doctor.getDocName() : null;
-    }
 }
