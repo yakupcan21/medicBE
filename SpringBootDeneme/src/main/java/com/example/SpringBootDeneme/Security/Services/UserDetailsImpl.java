@@ -17,8 +17,6 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long id;
 
-    private String username;
-
     private String firstName;
 
     private String surname;
@@ -35,7 +33,6 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(Long id, String firstName, String surname, String date, long phoneNumber, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.username = String.valueOf(id); // Using ID as username
         this.firstName = firstName;
         this.surname = surname;
         this.date = date;
@@ -79,7 +76,7 @@ public class UserDetailsImpl implements UserDetails {
         return date;
     }
 
-    public long getphoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -90,7 +87,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return String.valueOf(id);
     }
 
     @Override
