@@ -18,12 +18,10 @@ import java.util.Optional;
 public class ReportsController {
 
     @Autowired
-    private ReportsRepository ReportsRepository;
+    private ReportsRepository reportsRepository;
+
     @Autowired
     private PatientsRepository patientsRepository;
-
-    @GetMapping(path ="/seeAllReports")
-    public Iterable<Reports> getAllDoctors(){ return ReportsRepository.findAll(); }
 
 
 
@@ -54,6 +52,43 @@ public class ReportsController {
             return savedReport;
         } else {
             // Hastayı bulamazsa null döndür
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @GetMapping(path = "/seeAllReports")
+    public Iterable<Reports> getAllReports() {
+        return reportsRepository.findAll();
+    }
+
+    @GetMapping("/report/{rapNum}")
+    public Optional<Reports> getReport(@PathVariable Long rapNum) {
+        return reportsRepository.findById(rapNum);
+    }
+
+    @PostMapping(path = "/createReport/{patientId}/{doctorId}")
+    public Reports post(@PathVariable Long patientId, @PathVariable Long doctorId, @RequestBody Reports reports) {
+        Patients patient = patientsRepository.findById(patientId).orElse(null);
+        Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
+
+        if (patient != null && doctor != null) {
+            // Set patient and doctor for the report
+            reports.setPatient(patient);
+            reports.setDoctor(doctor);
+
+            // Set other report information
+            reports.generateRandomRapNum();
+            reports.setCurrentDate();
+
+            // Save report to ReportsRepository
+            Reports savedReport = reportsRepository.save(reports);
+
+            // Add the report to the patient's report list
+            patient.getReports().add(savedReport);
+            patientsRepository.save(patient);
+
+            return savedReport;
+        } else {
+            // If patient or doctor not found, return null
             return null;
         }
     }
