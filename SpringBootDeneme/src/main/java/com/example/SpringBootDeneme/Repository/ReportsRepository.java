@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ReportsRepository extends JpaRepository<Reports, Long> {
     List<Reports> findByRapNum(long rapNum);
+    List<Reports> findByPatient_PatientId(long patientId); // Patient sınıfındaki patientId alanını kullanarak arama
 
 }

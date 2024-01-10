@@ -8,7 +8,6 @@ import lombok.Data;
 public class CreateReport {
 
     @Id
-
     private String imgName;
 
     @Lob
