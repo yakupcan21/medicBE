@@ -8,6 +8,7 @@ import com.example.SpringBootDeneme.Repository.PatientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -21,13 +22,17 @@ public class PatientsController {
     @GetMapping(path = "/seeAllPatients")
     public Iterable<Patients> getAllPatients() {return PatientsRepository.findAll(); }
 
-    @GetMapping("/patient/{id}")
-    public Patients getPatients(@PathVariable Long id) {
-        Optional<Patients> patients = PatientsRepository.findById(id);
-        if (patients.isPresent()) return patients.get();
-        return new Patients();
+    @GetMapping("/patient/{patientId}")
+    public List<Patients> getPatients(@PathVariable Integer patientId) {
+        return PatientsRepository.findByPatientId(patientId);
     }
 
-    @PostMapping(path ="/createPatient/{id}")
-    public Patients post(@RequestBody Patients patients) {return PatientsRepository.save(patients);    }
+
+
+
+    @PostMapping(path ="/createPatient/")
+    public Patients post(@RequestBody Patients patients)
+    {
+        return PatientsRepository.save(patients);
+    }
 }
