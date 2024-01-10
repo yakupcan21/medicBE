@@ -18,7 +18,7 @@ public class Reports {
 
     @ManyToOne
     @JoinColumn(name = "patientId")
-    private Patients patient;
+    private Patients Patient;
 
 /*
     @OneToOne(mappedBy = "CreateReport", cascade = CascadeType.ALL)
