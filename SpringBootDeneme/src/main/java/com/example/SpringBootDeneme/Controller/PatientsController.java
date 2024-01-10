@@ -8,6 +8,8 @@ import com.example.SpringBootDeneme.Repository.DoctorRepository;
 import com.example.SpringBootDeneme.Repository.PatientsRepository;
 import com.example.SpringBootDeneme.Repository.ReportsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,9 +48,27 @@ public class PatientsController {
     }
 
 
-    @PostMapping(path ="/createPatient/")
-    public Patients post(@RequestBody Patients patients)
-    {
-        return PatientsRepository.save(patients);
+    @PostMapping(path = "/createPatient/")
+    public ResponseEntity<?> post(@RequestBody Patients patients) {
+        try {
+            Patients savedPatient = PatientsRepository.save(patients);
+            return new ResponseEntity<>(savedPatient, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error saving patient: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+    @PostMapping("/login")
+    public String login(@RequestBody Patients patients) {
+        Long patientId = patients.getPatientId();
+        String password = patients.getPatientPassword();
+
+        Optional<Patients> patient = PatientsRepository.findById(patientId);
+
+        if (patient.isPresent() && patient.get().getPatientPassword().equals(password)) {
+            return "Login successful!";
+        } else {
+            return "Invalid credentials!";
+        }
+    }
+
 }

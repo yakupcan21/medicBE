@@ -61,9 +61,9 @@ public class Patients {
         }
     }
 
-
+/*
     public void setPatientPassword(String plainPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.patientPassword = passwordEncoder.encode(plainPassword);
-    }
+    }*/
 }
