@@ -25,9 +25,16 @@ public class ReportsController {
     @GetMapping(path ="/seeAllReports")
     public Iterable<Reports> getAllDoctors(){ return ReportsRepository.findAll(); }
 
+
+
     @GetMapping("/report/{rapNum}")
     public List<Reports> getReport(@PathVariable Long rapNum) {
         return ReportsRepository.findByRapNum(rapNum);
+    }
+
+    @GetMapping("/reportsByPatient/{patientId}")
+    public List<Reports> getReportsByPatient(@PathVariable Long patientId) {
+        return ReportsRepository.findByPatient_PatientId(patientId);
     }
 
     @PostMapping(path = "/createReport/{patientId}")
@@ -44,10 +51,6 @@ public class ReportsController {
 
             // ReportsRepository'ye kaydet
             Reports savedReport = ReportsRepository.save(reports);
-
-            // Hastanın rapor listesine ekleyin
-            patient.getReports().add(savedReport);
-            patientsRepository.save(patient);
             return savedReport;
         } else {
             // Hastayı bulamazsa null döndür

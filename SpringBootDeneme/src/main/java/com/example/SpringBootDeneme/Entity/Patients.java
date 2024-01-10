@@ -4,15 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Data
 public class Patients {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long patientId;
     private String patientName;
     private String patientSurname;
@@ -27,9 +26,6 @@ public class Patients {
     private int reportCount;
     private String reportLastVisit;
 
-    @OneToMany
-    @JoinColumn(name = "rapNum")
-    private List<Reports> reports;
 
     public Patients() {
         super();
@@ -51,19 +47,20 @@ public class Patients {
         this.reportLastVisit = reportLastVisit;
     }
 
+    public void updateReportInformation(List<Reports> reports) {
+        // Rapor sayısını güncelle
+        this.reportCount = reports.size();
 
-    public void updateReportInformation() {
-        if (reports != null && !reports.isEmpty()) {
-            this.reportCount = reports.size();
+        // En son ziyaret tarihini bul
+        if (!reports.isEmpty()) {
+            Reports latestReport = reports.stream()
+                    .max(Comparator.comparing(Reports::getRapDate))
+                    .orElseThrow(NoSuchElementException::new);
 
-            // Find the last visit date
-            Reports lastReport = reports.get(reports.size() - 1);
-            this.reportLastVisit = lastReport.getRapDate();
-        } else {
-            this.reportCount = 0;
-            this.reportLastVisit = null;
+            this.reportLastVisit = latestReport.getRapDate();
         }
     }
+
 
     public void setPatientPassword(String plainPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
