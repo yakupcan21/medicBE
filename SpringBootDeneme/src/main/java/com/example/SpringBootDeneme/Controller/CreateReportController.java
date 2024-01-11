@@ -2,10 +2,12 @@ package com.example.SpringBootDeneme.Controller;
 
 import com.example.SpringBootDeneme.Entity.CreateReport;
 import com.example.SpringBootDeneme.Entity.Doctor;
+import com.example.SpringBootDeneme.Entity.Patients;
 import com.example.SpringBootDeneme.Repository.CreateReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -18,6 +20,11 @@ public class CreateReportController {
 
     @GetMapping(path ="/seeAllCreateReports")
     public Iterable<CreateReport> getAllCreateReports(){ return CreateReportRepository.findAll(); }
+
+    @GetMapping("/createReportsByRapNum/{rapNum}")
+    public List<CreateReport> getCreateReportsByRapNum(@PathVariable long rapNum) {
+        return CreateReportRepository.findByReports_RapNum(rapNum);
+    }
 
     @GetMapping("/createReports/{id}")
     public CreateReport getCreateReports(@PathVariable Long id) {

@@ -29,7 +29,7 @@ public class PatientsController {
     public Iterable<Patients> getAllPatients() {return PatientsRepository.findAll(); }
 
     @GetMapping("/patient/{patientId}")
-    public List<Patients> getPatients(@PathVariable Integer patientId) {
+    public List<Patients> getPatients(@PathVariable long patientId) {
         return PatientsRepository.findByPatientId(patientId);
     }
 
