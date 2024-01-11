@@ -65,7 +65,7 @@ public class PatientsController {
         Optional<Patients> patient = PatientsRepository.findById(patientId);
 
         if (patient.isPresent() && patient.get().getPatientPassword().equals(password)) {
-            return "Login successful!";
+            return String.valueOf(patients.getPatientId());
         } else {
             return "Invalid credentials!";
         }
