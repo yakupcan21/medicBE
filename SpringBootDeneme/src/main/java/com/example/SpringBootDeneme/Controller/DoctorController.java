@@ -1,5 +1,6 @@
 package com.example.SpringBootDeneme.Controller;
 import com.example.SpringBootDeneme.Entity.Doctor;
+import com.example.SpringBootDeneme.Entity.Patients;
 import com.example.SpringBootDeneme.Repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,4 +26,20 @@ public class DoctorController {
 
     @PostMapping(path ="/createDoctor/{id}")
     public Doctor post(@RequestBody Doctor doctor) {return DoctorRepository.save(doctor); }
+
+    @PostMapping("/login")
+    public String login(@RequestBody Doctor doctors) {
+        Long docId = doctors.getDocId();
+        String password = doctors.getDocPassword();
+
+        Optional<Doctor> doctor = DoctorRepository.findById(docId);
+
+        if (doctor.isPresent() && doctor.get().getDocPassword().equals(password)) {
+            return String.valueOf(doctors.getDocId());
+        } else {
+            return "Invalid credentials!";
+        }
+    }
 }
+
+
