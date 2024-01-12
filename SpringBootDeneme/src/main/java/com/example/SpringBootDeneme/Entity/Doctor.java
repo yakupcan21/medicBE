@@ -46,9 +46,9 @@ public class Doctor {
         this.docDepartment = docDepartment;
         this.docHospital = docHospital;
     }
-    public void setDocPassword(String plainPassword) {
+    /*public void setDocPassword(String plainPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.docPassword = passwordEncoder.encode(plainPassword);
-    }
+    }*/
 
 }

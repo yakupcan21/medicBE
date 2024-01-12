@@ -33,7 +33,7 @@ public class CreateReportController {
         return new CreateReport();
     }
 
-    @PostMapping(path ="/createReports/{id}")
+    @PostMapping(path ="/createReports")
     public CreateReport post(@RequestBody CreateReport createreport) {return CreateReportRepository.save(createreport); }
 
 }
